@@ -4,7 +4,8 @@ def addpassword(db):
     password = input("Enter Password : ").strip()
 
     if not website or not user or not password :
-        print("All fields must not be empty:")
+        print("All fields required ")
+        return
 
     db[website] = {
         "username" : user,
@@ -12,7 +13,13 @@ def addpassword(db):
     }
 
 def viewpassword(db):
-    print(db)
+    webname = input("Enter Website Name: ")
+    if webname in db:
+        print(f"\nWebsite: {webname}")
+        print(f"Username: {db[webname]['username']}")
+        print(f"Password: {db[webname]['password']}\n")
+    else:
+        print(f"\n[Error] No password found for '{webname}'.\n")
 
 def deletepassword(db):
     item = input("Enter Website Name: ")
