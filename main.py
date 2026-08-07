@@ -1,8 +1,9 @@
 import sys
 import utils
 import passchecker
+import storage
 
-database = {}
+database = storage.load_database()
 
 while True:
     print("===========================")
@@ -18,8 +19,10 @@ while True:
 
     if choice == 1:
         utils.addpassword(database)
+        storage.save_database(database)
     elif choice == 2:
         utils.deletepassword(database)
+        storage.save_database(database)
     elif choice == 3:
         utils.viewpassword(database)
     elif choice == 4:
