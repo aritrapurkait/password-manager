@@ -1,19 +1,21 @@
 import sys
 import utils
 import passchecker
+import passgenerator
 import storage
 
 database = storage.load_database()
 
 while True:
-    print("===========================")
+    print("===================================")
     print("       ENTER YOUR CHOICE    ")
     print("  1. ADD PASSWORD    ")
     print("  2. DELETE PASSWORD")
     print("  3. VIEW PASSWORD  ")
     print("  4. PASSWORD STRENGTH CHECKER ")
+    print("  5. PASSWORD GENERATOR        ")
     print("  0. EXIT           ")
-    print("===========================")
+    print("===================================")
 
     choice = int(input("Enter Your Choice: "))
 
@@ -27,6 +29,8 @@ while True:
         utils.viewpassword(database)
     elif choice == 4:
         passchecker.passcheckstrength()
+    elif choice ==5:
+        passgenerator.generate_pass()
     elif choice == 0:
         print("\nExiting program. Goodbye!")
         sys.exit() 
