@@ -1,3 +1,4 @@
 password_db.json
 __pycache__/
 venv/
+master.key
