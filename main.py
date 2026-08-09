@@ -3,8 +3,47 @@ import utils
 import passchecker
 import passgenerator
 import storage
+import bcrypt
+import os
 
 database = storage.load_database()
+MASTER_KEY_FILE = "master.key"
+
+if not os.path.exists(MASTER_KEY_FILE):
+    print("===================================")
+    print("      FIRST TIME INITIALIZATION    ")
+    print("===================================")
+    print("Set a Master Password. 'This password is very Important!'\n")
+    
+    new_master = input("Create Master Password: ").strip()
+    
+    if not new_master:
+        print("\n[Error] Master password cannot be empty. Exiting.")
+        sys.exit()
+
+    salt = bcrypt.gensalt(rounds=12)
+    hashed = bcrypt.hashpw(new_master.encode('utf-8'), salt)
+    
+    with open(MASTER_KEY_FILE, "wb") as f:
+        f.write(hashed)
+        
+    print("\nMaster Password saved successfully!\n")
+
+else:
+    with open(MASTER_KEY_FILE, "rb") as f:
+        stored_hash = f.read()
+
+    print("===================================")
+    print("        AUTHENTICATION REQUIRED    ")
+    print("===================================")
+    attempt = input("Enter Master Password to Unlock: ").strip()
+    
+    if not bcrypt.checkpw(attempt.encode('utf-8'), stored_hash):
+        print("\n[Error] Incorrect Master Password. Access Denied!")
+        sys.exit()
+        
+    print("\nAccess Granted!\n")
+
 
 while True:
     print("===================================")
