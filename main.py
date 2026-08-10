@@ -5,6 +5,7 @@ import passgenerator
 import storage
 import bcrypt
 import os
+import keygen
 
 database = storage.load_database()
 MASTER_KEY_FILE = "master.key"
@@ -26,8 +27,11 @@ if not os.path.exists(MASTER_KEY_FILE):
     
     with open(MASTER_KEY_FILE, "wb") as f:
         f.write(hashed)
-        
+
+    del new_master
+       
     print("\nMaster Password saved successfully!\n")
+
 
 else:
     with open(MASTER_KEY_FILE, "rb") as f:
@@ -41,7 +45,11 @@ else:
     if not bcrypt.checkpw(attempt.encode('utf-8'), stored_hash):
         print("\n[Error] Incorrect Master Password. Access Denied!")
         sys.exit()
-        
+
+    key = keygen.encryption_key_gen(attempt)
+
+    del attempt
+       
     print("\nAccess Granted!\n")
 
 
@@ -59,13 +67,13 @@ while True:
     choice = int(input("Enter Your Choice: "))
 
     if choice == 1:
-        utils.addpassword(database)
+        utils.addpassword(database,key)
         storage.save_database(database)
     elif choice == 2:
         utils.deletepassword(database)
         storage.save_database(database)
     elif choice == 3:
-        utils.viewpassword(database)
+        utils.viewpassword(database,key)
     elif choice == 4:
         passchecker.passcheckstrength()
     elif choice ==5:
