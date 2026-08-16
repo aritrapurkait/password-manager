@@ -64,8 +64,12 @@ while True:
     print("  0. EXIT           ")
     print("===================================")
 
-    choice = int(input("Enter Your Choice: "))
-
+    try:
+        choice = int(input("Enter Your Choice: "))
+    except ValueError:
+        print("Invalid Choice!!!")
+        continue
+    
     if choice == 1:
         utils.addpassword(database,key)
         storage.save_database(database)
